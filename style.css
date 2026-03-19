@@ -69,10 +69,18 @@ header.scrolled {
 }
 
 .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
     font-size: 1.5rem;
     font-weight: 700;
     color: var(--accent-color);
     letter-spacing: 1px;
+}
+
+.logo img {
+    height: 40px;
+    width: auto;
 }
 
 .nav-links {
@@ -108,16 +116,17 @@ header.scrolled {
     transform: translate(-50%, -50%);
     width: 600px;
     height: 600px;
-    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+    background: radial-gradient(circle, var(--accent-glow) 45%, transparent 80%);
     z-index: -1;
 }
 
 .hero-content {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     width: 100%;
     margin-bottom: 80px;
+    gap: 40px;
 }
 
 .hero-text-left h1, .hero-text-right h2 {
@@ -152,13 +161,30 @@ header.scrolled {
 .profile-placeholder {
     width: 100%;
     height: 100%;
-    background: #111;
     border-radius: 200px 200px 20px 20px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #333;
-    border: 1px solid rgba(255,255,255,0.05);
+    overflow: hidden;
+    position: relative;
+}
+
+.profile-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-placeholder::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40%;
+    background: linear-gradient(to top, var(--bg-main), transparent);
+    pointer-events: none;
 }
 
 .hero-footer {
@@ -175,8 +201,30 @@ header.scrolled {
     list-style: none;
 }
 
-.social-icons a { color: var(--text-muted); font-size: 0.9rem; }
-.social-icons a:hover { color: var(--accent-color); }
+.social-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-muted);
+    transition: var(--transition);
+}
+
+.social-item i {
+    font-size: 1.8rem;
+}
+
+.social-item span {
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 400;
+}
+
+.social-item:hover {
+    color: var(--accent-color);
+    transform: translateY(-5px);
+}
 
 .resume-link {
     font-size: 0.9rem;
@@ -283,7 +331,18 @@ header.scrolled {
     border-top: 1px solid rgba(255, 255, 255, 0.05);
     padding-top: 40px;
 }
-.footer-brand { font-weight: 600; color: var(--accent-color); }
+.footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 600;
+    color: var(--accent-color);
+}
+
+.footer-brand img {
+    height: 30px;
+    width: auto;
+}
 .footer-copyright { color: var(--text-muted); font-size: 0.9rem; }
 
 /* --- JS ANIMATION CLASSES --- */

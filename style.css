@@ -1,0 +1,299 @@
+/* --- GLOBAL VARIABLES --- */
+:root {
+    --bg-main: #070709;
+    --bg-darker: #040405;
+    --text-main: #f3f4f6;
+    --text-muted: #9ca3af;
+    --accent-glow: rgba(139, 92, 246, 0.15); /* Halus, tidak terlalu mencolok */
+    --accent-color: #d4af37; /* Emas pudar yang classy */
+    --font-family: 'Poppins', sans-serif;
+    --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* --- RESET --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    font-family: var(--font-family);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: var(--transition);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+.bg-darker {
+    background-color: var(--bg-darker);
+}
+
+section {
+    padding: 120px 0;
+}
+
+/* --- NAVBAR --- */
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+    background: transparent;
+    transition: var(--transition);
+}
+
+header.scrolled {
+    background: rgba(7, 7, 9, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 90px;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    letter-spacing: 1px;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 40px;
+}
+
+.nav-links a {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--text-muted);
+}
+
+.nav-links a:hover {
+    color: var(--text-main);
+}
+
+/* --- HERO SECTION --- */
+#hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    padding-top: 150px;
+}
+
+.glow-bg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+    z-index: -1;
+}
+
+.hero-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 80px;
+}
+
+.hero-text-left h1, .hero-text-right h2 {
+    font-size: 4rem;
+    font-weight: 200;
+    line-height: 1.1;
+    margin-bottom: 10px;
+}
+
+.hero-text-left h1 { font-weight: 600; }
+.hero-text-right h2 strong { font-weight: 600; color: var(--accent-color); }
+
+.subtitle {
+    font-size: 1rem;
+    color: var(--accent-color);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+}
+
+.location {
+    color: var(--text-muted);
+    font-weight: 200;
+}
+
+.hero-visual {
+    flex-shrink: 0;
+    width: 350px;
+    height: 450px;
+}
+
+.profile-placeholder {
+    width: 100%;
+    height: 100%;
+    background: #111;
+    border-radius: 200px 200px 20px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #333;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.hero-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 30px;
+}
+
+.social-icons {
+    display: flex;
+    gap: 30px;
+    list-style: none;
+}
+
+.social-icons a { color: var(--text-muted); font-size: 0.9rem; }
+.social-icons a:hover { color: var(--accent-color); }
+
+.resume-link {
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+}
+
+/* --- METRICS / ABOUT --- */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+    text-align: center;
+}
+
+.metric-item strong {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: var(--accent-color);
+}
+
+.metric-item span {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+/* --- PROJECTS --- */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 60px;
+}
+
+.section-header h2 {
+    font-size: 2.5rem;
+    font-weight: 200;
+}
+
+.section-header h2 strong { font-weight: 600; color: var(--accent-color); }
+.view-all { color: var(--text-muted); font-size: 0.9rem; border-bottom: 1px solid var(--text-muted); padding-bottom: 2px;}
+
+.project-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+
+.project-card {
+    background: var(--bg-darker);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+.project-card:hover {
+    transform: translateY(-10px);
+    border-color: rgba(212, 175, 55, 0.3); /* Emas pudar saat hover */
+}
+
+.project-img {
+    height: 300px;
+    background: #151515;
+}
+
+.project-info {
+    padding: 30px;
+}
+
+.project-category {
+    font-size: 0.8rem;
+    color: var(--accent-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.project-title { font-size: 1.5rem; margin-bottom: 15px; }
+.project-desc { color: var(--text-muted); font-size: 0.95rem; }
+
+/* --- CONTACT & FOOTER --- */
+.contact-wrapper { text-align: center; }
+.contact-title { font-size: 3.5rem; font-weight: 200; margin-bottom: 20px; }
+.contact-title strong { font-weight: 600; color: var(--accent-color); }
+.contact-subtitle { color: var(--text-muted); margin-bottom: 40px; font-size: 1.1rem; }
+
+.btn-primary {
+    display: inline-block;
+    padding: 16px 40px;
+    background: var(--text-main);
+    color: var(--bg-main);
+    font-weight: 600;
+    border-radius: 50px;
+}
+
+.btn-primary:hover { background: var(--accent-color); }
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 40px;
+}
+.footer-brand { font-weight: 600; color: var(--accent-color); }
+.footer-copyright { color: var(--text-muted); font-size: 0.9rem; }
+
+/* --- JS ANIMATION CLASSES --- */
+.hidden {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.show {
+    opacity: 1;
+    transform: translateY(0);
+}

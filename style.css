@@ -1,21 +1,16 @@
-/* --- GLOBAL VARIABLES --- */
+/* =========================================
+   GLOBAL VARIABLES & RESET
+   ========================================= */
 :root {
-    --bg-main: #070709;
-    --bg-darker: #040405;
+    --bg-main: #0a0a0a;
     --text-main: #f3f4f6;
     --text-muted: #9ca3af;
-    --accent-glow: rgba(139, 92, 246, 0.15); /* Halus, tidak terlalu mencolok */
-    --accent-color: #d4af37; /* Emas pudar yang classy */
+    --accent-color: #d4af37;
     --font-family: 'Poppins', sans-serif;
     --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* --- RESET --- */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
     background-color: var(--bg-main);
@@ -23,336 +18,150 @@ body {
     font-family: var(--font-family);
     line-height: 1.6;
     overflow-x: hidden;
+    overscroll-behavior: none; 
 }
 
-a {
-    text-decoration: none;
-    color: inherit;
-    transition: var(--transition);
+a { text-decoration: none; color: inherit; transition: var(--transition); }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+section { padding: 120px 0; }
+#pinned-section, #expertise-wrapper, #projects, #work-together, #contact-page { padding: 0; }
+
+.font-8bit { font-family: 'Press Start 2P', cursive; }
+
+/* =========================================
+   CUSTOM SCROLLBAR
+   ========================================= */
+::-webkit-scrollbar { display: none; }
+html { scrollbar-width: none; -ms-overflow-style: none; }
+
+#custom-scrollbar {
+    position: fixed; top: 0; right: 12px; width: 6px; height: 100vh;
+    z-index: 999; pointer-events: none; display: flex; justify-content: center;
+    padding: 20vh 0; opacity: 0; transition: opacity 0.4s ease-in-out;
+}
+#custom-scrollbar.is-active { opacity: 1; }
+
+.scroll-track {
+    width: 2px; height: 100%; background-color: rgba(255, 255, 255, 0.1);
+    position: relative; border-radius: 4px; transition: background-color 0.3s ease;
+}
+.scroll-thumb {
+    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 4px; height: 40px; background-color: white; border-radius: 4px; will-change: transform; transition: background-color 0.3s ease;
 }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 24px;
+/* Light Theme Scrollbar (Projects & Contact) */
+.theme-light #custom-scrollbar .scroll-track { background-color: rgba(0, 0, 0, 0.1); }
+.theme-light #custom-scrollbar .scroll-thumb { background-color: #4b5563; /* Abu abu gelap */ }
+
+/* =========================================
+   TYPOGRAPHY & EFFECTS
+   ========================================= */
+.outline-text {
+    color: transparent; -webkit-text-stroke: 1px white; text-stroke: 1px white; 
 }
 
-.bg-darker {
-    background-color: var(--bg-darker);
+/* Skip-Ink Effect (Let's Work Together) - #060d23 matches bg */
+.hover-underline-trigger {
+    text-shadow: 4px 0 #060d23, -4px 0 #060d23, 0 4px #060d23, 0 -4px #060d23;
+    z-index: 10; position: relative; display: inline-block;
+}
+.custom-underline-top, .custom-underline-bottom { z-index: -1; } /* Mundur ke balik text shadow */
+
+/* =========================================
+   NAVBAR BUTTONS (DARK & LIGHT THEMES)
+   ========================================= */
+header { transition: var(--transition); background: transparent !important; }
+
+/* 1. DARK THEME DEFAULT */
+.nav-btn-custom.music-btn, .nav-btn-custom.menu-btn {
+    background-color: transparent; border: 1px solid rgba(255,255,255,0.3); color: white;
+}
+.nav-btn-custom.talk-btn {
+    background-color: #1c1c1c; border: 1px solid #1c1c1c; color: white;
+}
+#music-line, .wave-bar, #menu-icon span, .dot-indicator { background-color: white; }
+
+/* Dark Theme HOVER */
+.nav-btn-custom.music-btn:hover, .nav-btn-custom.menu-btn:hover {
+    background-color: #e5e7eb; color: black; border-color: #e5e7eb;
+}
+.nav-btn-custom.music-btn:hover #music-line,
+.nav-btn-custom.music-btn:hover .wave-bar,
+.nav-btn-custom.menu-btn:hover #menu-icon span { background-color: black; }
+
+.nav-btn-custom.talk-btn:hover {
+    background-color: white; color: black; border-color: white;
+}
+.nav-btn-custom.talk-btn:hover .dot-indicator { background-color: black; }
+
+/* 2. LIGHT THEME */
+.header-theme.theme-light { color: black !important; }
+.header-theme.theme-light .brand-text { color: black; }
+
+.header-theme.theme-light .nav-btn-custom.music-btn,
+.header-theme.theme-light .nav-btn-custom.menu-btn { 
+    background-color: transparent; border-color: rgba(0,0,0,0.3); color: black;
+}
+.header-theme.theme-light .nav-btn-custom.talk-btn { 
+    background-color: black; color: white; border-color: black;
+}
+.header-theme.theme-light #music-line, 
+.header-theme.theme-light .wave-bar, 
+.header-theme.theme-light #menu-icon span { background-color: black; }
+.header-theme.theme-light .dot-indicator { background-color: white; }
+
+/* Light Theme HOVER */
+.header-theme.theme-light .nav-btn-custom.music-btn:hover,
+.header-theme.theme-light .nav-btn-custom.menu-btn:hover {
+    background-color: #1c1c1c; color: white; border-color: #1c1c1c;
+}
+.header-theme.theme-light .nav-btn-custom.music-btn:hover #music-line,
+.header-theme.theme-light .nav-btn-custom.music-btn:hover .wave-bar,
+.header-theme.theme-light .nav-btn-custom.menu-btn:hover #menu-icon span { background-color: white; }
+
+.header-theme.theme-light .nav-btn-custom.talk-btn:hover {
+    background-color: #e5e7eb; color: black; border-color: #e5e7eb;
+}
+.header-theme.theme-light .nav-btn-custom.talk-btn:hover .dot-indicator { background-color: black; }
+
+/* Dropdown */
+#dropdown-menu.is-open .menu-text-anim { transform: translateY(0); opacity: 1; }
+.menu-text-anim { transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease; }
+.menu-link:nth-child(1) .menu-text-anim { transition-delay: 0.05s; }
+.menu-link:nth-child(2) .menu-text-anim { transition-delay: 0.10s; }
+.menu-link:nth-child(3) .menu-text-anim { transition-delay: 0.15s; }
+.menu-link:nth-child(4) .menu-text-anim { transition-delay: 0.20s; }
+.active-dot { top: 50%; transform: translateY(-50%) scale(0); }
+
+/* =========================================
+   3D CARDS 
+   ========================================= */
+.card-scene { perspective: 1500px; }
+.card-3d-wrapper {
+    position: relative; width: 100%; height: 100%;
+    transform-style: preserve-3d; transform: rotateY(180deg); will-change: transform;
+}
+.card-face {
+    position: absolute; width: 100%; height: 100%;
+    backface-visibility: hidden; -webkit-backface-visibility: hidden;
+    border-radius: 12px; background-clip: padding-box; overflow: hidden;
+}
+.card-front { background-color: white; transform: rotateY(0deg); }
+.card-back {
+    background-image: url('images/card.png'); 
+    background-size: 100% 100%; background-repeat: no-repeat;
+    background-position: center; transform: rotateY(180deg);
 }
 
-section {
-    padding: 120px 0;
+@keyframes floatCard {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
 }
+.floating-card { animation: floatCard 4s ease-in-out infinite; }
 
-/* --- NAVBAR --- */
-header {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 100;
-    background: transparent;
-    transition: var(--transition);
-}
-
-header.scrolled {
-    background: rgba(7, 7, 9, 0.85);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.nav-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 90px;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--accent-color);
-    letter-spacing: 1px;
-}
-
-.logo img {
-    height: 40px;
-    width: auto;
-}
-
-.nav-links {
-    display: flex;
-    list-style: none;
-    gap: 40px;
-}
-
-.nav-links a {
-    font-size: 0.9rem;
-    font-weight: 400;
-    color: var(--text-muted);
-}
-
-.nav-links a:hover {
-    color: var(--text-main);
-}
-
-/* --- HERO SECTION --- */
-#hero {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    position: relative;
-    padding-top: 150px;
-}
-
-.glow-bg {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, var(--accent-glow) 45%, transparent 80%);
-    z-index: -1;
-}
-
-.hero-content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    margin-bottom: 80px;
-    gap: 40px;
-}
-
-.hero-text-left h1, .hero-text-right h2 {
-    font-size: 4rem;
-    font-weight: 200;
-    line-height: 1.1;
-    margin-bottom: 10px;
-}
-
-.hero-text-left h1 { font-weight: 600; }
-.hero-text-right h2 strong { font-weight: 600; color: var(--accent-color); }
-
-.subtitle {
-    font-size: 1rem;
-    color: var(--accent-color);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: 15px;
-}
-
-.location {
-    color: var(--text-muted);
-    font-weight: 200;
-}
-
-.hero-visual {
-    flex-shrink: 0;
-    width: 350px;
-    height: 450px;
-}
-
-.profile-placeholder {
-    width: 100%;
-    height: 100%;
-    border-radius: 200px 200px 20px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #333;
-    overflow: hidden;
-    position: relative;
-}
-
-.profile-placeholder img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.profile-placeholder::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 40%;
-    background: linear-gradient(to top, var(--bg-main), transparent);
-    pointer-events: none;
-}
-
-.hero-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    padding-top: 30px;
-}
-
-.social-icons {
-    display: flex;
-    gap: 30px;
-    list-style: none;
-}
-
-.social-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    color: var(--text-muted);
-    transition: var(--transition);
-}
-
-.social-item i {
-    font-size: 1.8rem;
-}
-
-.social-item span {
-    font-size: 0.75rem;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    font-weight: 400;
-}
-
-.social-item:hover {
-    color: var(--accent-color);
-    transform: translateY(-5px);
-}
-
-.resume-link {
-    font-size: 0.9rem;
-    letter-spacing: 1px;
-}
-
-/* --- METRICS / ABOUT --- */
-.metrics-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 40px;
-    text-align: center;
-}
-
-.metric-item strong {
-    display: block;
-    font-size: 2.5rem;
-    font-weight: 600;
-    color: var(--accent-color);
-}
-
-.metric-item span {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-}
-
-/* --- PROJECTS --- */
-.section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-bottom: 60px;
-}
-
-.section-header h2 {
-    font-size: 2.5rem;
-    font-weight: 200;
-}
-
-.section-header h2 strong { font-weight: 600; color: var(--accent-color); }
-.view-all { color: var(--text-muted); font-size: 0.9rem; border-bottom: 1px solid var(--text-muted); padding-bottom: 2px;}
-
-.project-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-}
-
-.project-card {
-    background: var(--bg-darker);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 12px;
-    overflow: hidden;
-    transition: var(--transition);
-}
-
-.project-card:hover {
-    transform: translateY(-10px);
-    border-color: rgba(212, 175, 55, 0.3); /* Emas pudar saat hover */
-}
-
-.project-img {
-    height: 300px;
-    background: #151515;
-}
-
-.project-info {
-    padding: 30px;
-}
-
-.project-category {
-    font-size: 0.8rem;
-    color: var(--accent-color);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 10px;
-    display: block;
-}
-
-.project-title { font-size: 1.5rem; margin-bottom: 15px; }
-.project-desc { color: var(--text-muted); font-size: 0.95rem; }
-
-/* --- CONTACT & FOOTER --- */
-.contact-wrapper { text-align: center; }
-.contact-title { font-size: 3.5rem; font-weight: 200; margin-bottom: 20px; }
-.contact-title strong { font-weight: 600; color: var(--accent-color); }
-.contact-subtitle { color: var(--text-muted); margin-bottom: 40px; font-size: 1.1rem; }
-
-.btn-primary {
-    display: inline-block;
-    padding: 16px 40px;
-    background: var(--text-main);
-    color: var(--bg-main);
-    font-weight: 600;
-    border-radius: 50px;
-}
-
-.btn-primary:hover { background: var(--accent-color); }
-
-.footer-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    padding-top: 40px;
-}
-.footer-brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-weight: 600;
-    color: var(--accent-color);
-}
-
-.footer-brand img {
-    height: 30px;
-    width: auto;
-}
-.footer-copyright { color: var(--text-muted); font-size: 0.9rem; }
-
-/* --- JS ANIMATION CLASSES --- */
-.hidden {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-}
-
-.show {
-    opacity: 1;
-    transform: translateY(0);
+/* Animasi Ombak Musik */
+@keyframes eq {
+    0%, 100% { height: 4px; }
+    50% { height: 14px; }
 }

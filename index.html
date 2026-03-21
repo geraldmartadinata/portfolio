@@ -1,106 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio - Gerald Martadinata</title>
-    <link rel="icon" type="image/png" href="images/favicons.png">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    
+    <link rel="icon" type="image/png" href="images/favicons.png?v=2">
 
-    <header id="header">
-        <div class="container nav-container">
-            <div class="logo">
-                <img src="images/logo.png" alt="Logo">
-                <span>Gerald Martadinata</span>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        /* Animasi Ombak Musik */
+        @keyframes eq {
+            0%, 100% { height: 4px; }
+            50% { height: 14px; }
+        }
+        .wave-bar { animation: eq 1s infinite cubic-bezier(0.76, 0, 0.24, 1); }
+
+        /* Optimasi Teks Menu Masuk (Super Snappy) */
+        #dropdown-menu.is-open .menu-text-anim {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .menu-text-anim {
+            /* Transisi dipercepat dari 0.5s ke 0.3s */
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+        }
+        /* Jeda kemunculan teks dipercepat */
+        .menu-link:nth-child(1) .menu-text-anim { transition-delay: 0.05s; }
+        .menu-link:nth-child(2) .menu-text-anim { transition-delay: 0.10s; }
+        .menu-link:nth-child(3) .menu-text-anim { transition-delay: 0.15s; }
+        .menu-link:nth-child(4) .menu-text-anim { transition-delay: 0.20s; }
+    </style>
+</head>
+<body class="bg-[#0a0a0a] text-white">
+
+    <header class="fixed top-0 left-0 w-full p-6 md:px-12 flex justify-between items-center z-[100] bg-transparent font-[Poppins]">
+        <div class="text-xl md:text-2xl font-medium tracking-tight cursor-pointer hover:opacity-70 transition-opacity text-white">
+            Gerald Martadinata
+        </div>
+        
+        <div class="flex items-center gap-2 md:gap-3">
+          
+          <button id="music-toggle" class="w-11 h-11 flex items-center justify-center rounded-full bg-[#1c1c1c] text-white border border-neutral-800 hover:bg-white hover:text-black transition-colors duration-300 cursor-pointer group">
+            <div id="music-line" class="w-5 h-[2px] bg-current group-hover:scale-x-110 transition-transform duration-300"></div>
+            <div id="music-waves" class="hidden items-end gap-[2px] h-3.5">
+              <div class="w-[2px] bg-current wave-bar" style="animation-delay: 0.0s"></div>
+              <div class="w-[2px] bg-current wave-bar" style="animation-delay: 0.2s"></div>
+              <div class="w-[2px] bg-current wave-bar" style="animation-delay: 0.4s"></div>
+              <div class="w-[2px] bg-current wave-bar" style="animation-delay: 0.2s"></div>
+              <div class="w-[2px] bg-current wave-bar" style="animation-delay: 0.0s"></div>
             </div>
-            <nav>
-                <ul class="nav-links">
-                    <li><a href="#hero">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#projects">Work</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </nav>
+          </button>
+  
+          <a href="mailto:geraldbinus@gmail.com" class="group relative overflow-hidden flex items-center justify-center w-[140px] h-[44px] rounded-full text-[11px] font-[600] tracking-[0.15em] uppercase transition-colors duration-300 bg-[#1c1c1c] text-white hover:bg-white hover:text-black border border-neutral-800">
+            <span class="absolute left-5 -translate-x-8 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300 ease-out text-sm">&rarr;</span>
+            <span class="transform group-hover:translate-x-3 transition-transform duration-300 ease-out flex items-center gap-2">
+              Let's Talk
+              <span class="w-1 h-1 bg-current rounded-full group-hover:opacity-0 transition-opacity duration-300"></span>
+            </span>
+          </a>
+
+          <div class="relative">
+            <button id="menu-btn" class="group flex items-center gap-2 px-6 py-[13px] bg-white text-black rounded-full text-[11px] font-[600] tracking-[0.15em] uppercase hover:bg-neutral-200 transition-colors">
+              <span id="menu-text">Menu</span>
+              <div id="menu-icon" class="flex flex-col gap-[3px] transition-transform duration-300 ease-in-out">
+                <span class="w-1 h-1 bg-black rounded-full transition-all duration-300"></span>
+                <span class="w-1 h-1 bg-black rounded-full transition-all duration-300"></span>
+              </div>
+            </button>
+            
+            <div id="dropdown-menu" class="absolute top-[60px] right-0 w-[320px] bg-white text-black rounded-[24px] p-4 shadow-2xl opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-200 ease-out flex flex-col gap-1">
+               
+               <a href="#hero" class="menu-link group flex justify-between items-center text-[17px] font-[400] py-3 px-6 rounded-full hover:bg-[#f0f4ff] transition-colors duration-300" data-target="hero">
+                   <span class="overflow-hidden">
+                       <span class="menu-text-anim inline-block translate-y-6 opacity-0">Home</span>
+                   </span>
+                   <div class="relative w-5 h-5 flex items-center justify-end overflow-hidden">
+                       <span class="active-dot absolute right-1 w-1.5 h-1.5 bg-black rounded-full transition-all duration-300 opacity-0 scale-0 group-hover:opacity-0 group-hover:scale-0"></span>
+                       <span class="absolute -left-6 group-hover:left-0 transition-all duration-300 ease-out text-lg">&rarr;</span>
+                   </div>
+               </a>
+               
+               <a href="#about" class="menu-link group flex justify-between items-center text-[17px] font-[400] py-3 px-6 rounded-full hover:bg-[#f0f4ff] transition-colors duration-300" data-target="about">
+                   <span class="overflow-hidden">
+                       <span class="menu-text-anim inline-block translate-y-6 opacity-0">About Us</span>
+                   </span>
+                   <div class="relative w-5 h-5 flex items-center justify-end overflow-hidden">
+                       <span class="active-dot absolute right-1 w-1.5 h-1.5 bg-black rounded-full transition-all duration-300 opacity-0 scale-0 group-hover:opacity-0 group-hover:scale-0"></span>
+                       <span class="absolute -left-6 group-hover:left-0 transition-all duration-300 ease-out text-lg">&rarr;</span>
+                   </div>
+               </a>
+
+               <a href="#projects" class="menu-link group flex justify-between items-center text-[17px] font-[400] py-3 px-6 rounded-full hover:bg-[#f0f4ff] transition-colors duration-300" data-target="projects">
+                   <span class="overflow-hidden">
+                       <span class="menu-text-anim inline-block translate-y-6 opacity-0">Projects</span>
+                   </span>
+                   <div class="relative w-5 h-5 flex items-center justify-end overflow-hidden">
+                       <span class="active-dot absolute right-1 w-1.5 h-1.5 bg-black rounded-full transition-all duration-300 opacity-0 scale-0 group-hover:opacity-0 group-hover:scale-0"></span>
+                       <span class="absolute -left-6 group-hover:left-0 transition-all duration-300 ease-out text-lg">&rarr;</span>
+                   </div>
+               </a>
+
+               <a href="#contact" class="menu-link group flex justify-between items-center text-[17px] font-[400] py-3 px-6 rounded-full hover:bg-[#f0f4ff] transition-colors duration-300" data-target="contact">
+                   <span class="overflow-hidden">
+                       <span class="menu-text-anim inline-block translate-y-6 opacity-0">Contact</span>
+                   </span>
+                   <div class="relative w-5 h-5 flex items-center justify-end overflow-hidden">
+                       <span class="active-dot absolute right-1 w-1.5 h-1.5 bg-black rounded-full transition-all duration-300 opacity-0 scale-0 group-hover:opacity-0 group-hover:scale-0"></span>
+                       <span class="absolute -left-6 group-hover:left-0 transition-all duration-300 ease-out text-lg">&rarr;</span>
+                   </div>
+               </a>
+
+            </div>
+          </div>
+
         </div>
     </header>
 
     <section id="hero">
         <div class="glow-bg"></div>
-        <div class="container hero-content">
-            <div class="hero-text-left hidden">
+        <div class="container hero-content mt-32"> <div class="hero-text-left">
                 <p class="subtitle">Hello, I'm</p>
                 <h1>Gerald Martadinata</h1>
                 <p class="location">Dual Citizen (US & ID) based in Indonesia</p>
             </div>
             
-            <div class="hero-visual hidden">
+            <div class="hero-visual">
                 <div class="profile-placeholder">
                     <img src="images/profile.png" alt="Gerald Martadinata">
                 </div>
             </div>
 
-            <div class="hero-text-right hidden">
+            <div class="hero-text-right">
                 <p class="subtitle">Creative</p>
                 <h2>AI <strong>Engineer</strong></h2>
                 <h2>& <strong>Web</strong> Developer</h2>
             </div>
         </div>
         
-        <div class="container hero-footer hidden">
+        <div class="container hero-footer">
             <a href="#" class="resume-link">VIEW RESUME &rarr;</a>
             <ul class="social-icons">
-                <li>
-                    <a href="https://www.linkedin.com/in/geraldmartadinata/" class="social-item">
-                        <i class="fab fa-linkedin"></i>
-                        <span>LinkedIn</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="https://github.com/geraldmartadinata/portofolio" class="social-item">
-                        <i class="fab fa-github"></i>
-                        <span>GitHub</span>
-                    </a>
-                </li>
+                <li><a href="#" class="social-item"><i class="fab fa-linkedin"></i><span>LinkedIn</span></a></li>
+                <li><a href="#" class="social-item"><i class="fab fa-github"></i><span>GitHub</span></a></li>
             </ul>
         </div>
     </section>
 
     <section id="about" class="bg-darker">
         <div class="container">
-            <div class="metrics-grid hidden">
-                <div class="metric-item">
-                    <strong>CS</strong>
-                    <span>Major at BINUS</span>
-                </div>
-                <div class="metric-item">
-                    <strong>S-Class</strong>
-                    <span>Scholar Program</span>
-                </div>
-                <div class="metric-item">
-                    <strong>AI Engineer</strong>
-                    <span>Focus Area</span>
-                </div>
-                <div class="metric-item">
-                    <strong>2028</strong>
-                    <span>Expected Exchange</span>
-                </div>
+            <div class="metrics-grid">
+                <div class="metric-item"><strong>CS</strong><span>Major at BINUS</span></div>
+                <div class="metric-item"><strong>S-Class</strong><span>Scholar Program</span></div>
+                <div class="metric-item"><strong>AI Engineer</strong><span>Focus Area</span></div>
+                <div class="metric-item"><strong>2028</strong><span>Expected Exchange</span></div>
             </div>
         </div>
     </section>
 
     <section id="projects">
         <div class="container">
-            <div class="section-header hidden">
+            <div class="section-header">
                 <h2>SELECT <strong>WORK</strong></h2>
                 <a href="#" class="view-all">View All</a>
             </div>
-            
             <div class="project-grid">
-                <div class="project-card hidden">
+                <div class="project-card">
                     <div class="project-img"></div>
                     <div class="project-info">
                         <span class="project-category">Web Development</span>
@@ -108,8 +174,7 @@
                         <p class="project-desc">A collaborative project built for HIMTI involving event management and responsive UI.</p>
                     </div>
                 </div>
-                
-                <div class="project-card hidden">
+                <div class="project-card">
                     <div class="project-img"></div>
                     <div class="project-info">
                         <span class="project-category">Problem Solving</span>
@@ -120,26 +185,6 @@
             </div>
         </div>
     </section>
-
-    <section id="contact" class="bg-darker">
-        <div class="container contact-wrapper hidden">
-            <h2 class="contact-title">LET'S <strong>CONNECT</strong></h2>
-            <p class="contact-subtitle">Whether it's a project, a job opportunity, or just a chat about tech.</p>
-            <a href="mailto:your.email@example.com" class="btn-primary">Get In Touch &rarr;</a>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container footer-content hidden">
-            <div class="footer-brand">
-                <img src="images/logo.png" alt="Logo">
-                <span>Gerald Martadinata</span>
-            </div>
-            <div class="footer-copyright">
-                &copy; 2026 Gerald Martadinata. All rights reserved.
-            </div>
-        </div>
-    </footer>
 
     <script src="script.js"></script>
 </body>

@@ -268,3 +268,86 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 });
+
+// -- TIMELINE 7: PROJECT CLICK TRANSITION & REVERSE BACK --
+    const projectItems = document.querySelectorAll('.project-item');
+    
+    // Mencegah browser melompat ke posisi scroll secara default
+    if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+    }
+
+    // 1. REVERSE BACK LOGIC (Saat kembali dari halaman project)
+    if (sessionStorage.getItem('returningFromProject') === 'true') {
+        const savedScroll = sessionStorage.getItem('scrollPos');
+        const imgIndex = sessionStorage.getItem('clickedProjectIndex');
+
+        if (savedScroll !== null && imgIndex !== null) {
+            const targetItem = projectItems[imgIndex];
+            const rect = targetItem.getBoundingClientRect();
+            
+            // Hitung posisi absolut dan posisikan grid TEPAT di tengah layar
+            const absoluteY = parseInt(savedScroll) + rect.top;
+            const centerPos = absoluteY - window.innerHeight / 2 + rect.height / 2;
+            window.scrollTo(0, centerPos);
+
+            const targetImgContainer = targetItem.querySelector('.aspect-\\[16\\/10\\]');
+            targetImgContainer.style.opacity = 0;
+
+            // Buat kloningan layar penuh
+            const clone = targetImgContainer.cloneNode(true);
+            document.body.appendChild(clone);
+            gsap.set(clone, {
+                position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh",
+                zIndex: 9999, margin: 0, borderRadius: 0, objectFit: "cover"
+            });
+
+            // Animasi kembali ke grid
+            const freshRect = targetImgContainer.getBoundingClientRect();
+            gsap.to(clone, {
+                top: freshRect.top, left: freshRect.left, width: freshRect.width, height: freshRect.height,
+                borderRadius: "0.5rem", duration: 1, ease: "power3.inOut",
+                onComplete: () => {
+                    targetImgContainer.style.opacity = 1;
+                    clone.remove();
+                }
+            });
+        }
+        sessionStorage.removeItem('returningFromProject');
+        sessionStorage.removeItem('scrollPos');
+        sessionStorage.removeItem('clickedProjectIndex');
+    }
+
+    // 2. PROJECT CLICK LOGIC (Saat diklik masuk)
+    projectItems.forEach((item, index) => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            const imgContainer = item.querySelector('.aspect-\\[16\\/10\\]');
+            const rect = imgContainer.getBoundingClientRect();
+
+            sessionStorage.setItem('returningFromProject', 'true');
+            sessionStorage.setItem('scrollPos', window.scrollY);
+            sessionStorage.setItem('clickedProjectIndex', index);
+
+            const clone = imgContainer.cloneNode(true);
+            document.body.appendChild(clone);
+            
+            gsap.set(clone, {
+                position: "fixed", top: rect.top, left: rect.left, width: rect.width, height: rect.height,
+                zIndex: 9999, margin: 0
+            });
+
+            imgContainer.style.opacity = 0;
+
+            gsap.to(clone, {
+                top: 0, left: 0, width: "100vw", height: "100vh", borderRadius: 0,
+                duration: 0.8, ease: "power3.inOut"
+            });
+
+            gsap.to("#header, #custom-scrollbar, section", { opacity: 0, duration: 0.5, delay: 0.3 });
+
+            setTimeout(() => {
+                window.location.href = `project-${index + 1}.html`;
+            }, 900);
+        });
+    });

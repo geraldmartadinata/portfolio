@@ -31,26 +31,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 fadeAudio(bgMusic, 0, 800);
                 setTimeout(() => bgMusic.pause(), 800);
                 
-                musicWaves.classList.remove('opacity-100', 'music-waves-active');
-                musicWaves.classList.add('opacity-0');
+                // Soundwave memudar dan menyusut ke garis pusat
+                musicWaves.classList.remove('opacity-100', 'scale-x-100', 'music-waves-active');
+                musicWaves.classList.add('opacity-0', 'scale-x-0');
                 setTimeout(() => { 
-                    musicLine.style.opacity = '1'; 
-                    musicLine.style.width = '1.25rem'; 
+                    musicLine.classList.remove('opacity-0', 'scale-x-0');
                 }, 300);
             } else {
                 bgMusic.play().catch(e => console.log("Menunggu audio...", e));
                 fadeAudio(bgMusic, 0.3, 1200);
                 
-                musicLine.style.opacity = '0';
-                musicLine.style.width = '0rem';
-                musicWaves.classList.remove('opacity-0');
-                musicWaves.classList.add('opacity-100', 'music-waves-active');
+                // Garis menyusut, lalu Soundwave merekah dari pusat ke kiri/kanan
+                musicLine.classList.add('opacity-0', 'scale-x-0');
+                musicWaves.classList.remove('opacity-0', 'scale-x-0');
+                musicWaves.classList.add('opacity-100', 'scale-x-100', 'music-waves-active');
             }
             isPlaying = !isPlaying;
         });
     }
 
-    // Menu Toggle Logic
     const menuBtn = document.getElementById('menu-btn');
     const dropdownMenu = document.getElementById('dropdown-menu');
     const menuIcon = document.getElementById('menu-icon');
@@ -99,38 +98,20 @@ document.addEventListener('DOMContentLoaded', () => {
         scrollTimeout = setTimeout(() => scrollbar.classList.remove('is-active'), 3000);
     });
 
-    // -- 2. DYNAMIC THEME SWITCHER --
-    // Mendeteksi area dengan class .light-theme-zone untuk mengubah warna navbar 1 kali saja tanpa glitch.
-    const lightZones = document.querySelectorAll('.light-theme-zone');
+    // -- 2. DYNAMIC THEME SWITCHER (HANYA 1 KALI TRIGGER) --
+    // Mengaktifkan Light Theme saat masuk ke Projects, dan akan terus Light Theme sampai dasar halaman.
     const header = document.getElementById('header');
     
-    lightZones.forEach(zone => {
-        ScrollTrigger.create({
-            trigger: zone,
-            start: "top 5%", 
-            end: "bottom 5%",
-            onEnter: () => {
-                header.classList.add('theme-light');
-                scrollbar.classList.add('theme-light');
-            },
-            onLeave: () => {
-                header.classList.remove('theme-light');
-                scrollbar.classList.remove('theme-light');
-            },
-            onEnterBack: () => {
-                header.classList.add('theme-light');
-                scrollbar.classList.add('theme-light');
-            },
-            onLeaveBack: () => {
-                header.classList.remove('theme-light');
-                scrollbar.classList.remove('theme-light');
-            }
-        });
+    ScrollTrigger.create({
+        trigger: "#projects",
+        start: "top 5%", 
+        end: "max", // Menahan kondisi light-theme ini hingga maksimal/akhir scroll halaman
+        onEnter: () => { header.classList.add('theme-light'); scrollbar.classList.add('theme-light'); },
+        onLeaveBack: () => { header.classList.remove('theme-light'); scrollbar.classList.remove('theme-light'); }
     });
 
-    // -- TIMELINE 1: HERO KE HELLO (Native Smooth Reveal & Reversible) --
+    // -- TIMELINE 1: HERO KE HELLO --
     const outlineTexts = document.querySelectorAll('.outline-text');
-    
     const tlIntro = gsap.timeline({
         scrollTrigger: {
             trigger: "#hero-hello-space",
@@ -142,7 +123,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     tlIntro.to("#scroll-prompt", { opacity: 0, duration: 0.2 })
            .to(outlineTexts, { color: "white", webkitTextStrokeWidth: "0px", duration: 1 })
-           // Transisi keluar Hero secara bersamaan dengan masuknya background & teks Hello
            .to("#hero-text-wrapper", { y: -80, opacity: 0, duration: 1, ease: "power2.inOut" }, "transition")
            .to("#hello-bg", { opacity: 0.5, scale: 1, duration: 1, ease: "power1.inOut" }, "transition")
            .to(".fact-reveal", { y: 0, opacity: 1, stagger: 0.15, duration: 1, ease: "power3.out" }, "transition+=0.2");
@@ -156,20 +136,21 @@ document.addEventListener('DOMContentLoaded', () => {
             scrub: 1
         }
     });
-
     tlExpertise.to("#text-area", { y: "0%", opacity: 1, duration: 1, ease: "power2.out" }, "enter")
                .to("#text-expertise", { y: "0%", opacity: 1, duration: 1, ease: "power2.out" }, "enter")
                .to("#text-expertise", { x: 100, duration: 1, ease: "power1.inOut" }, "shift") 
                .to("#text-desc", { opacity: 1, x: 0, duration: 1 }, "shift");
 
-    // -- TIMELINE 3: EXPERTISE CARDS (Native Scroll Space) --
+    // -- TIMELINE 3: EXPERTISE CARDS & FLOATING --
     const cardsWrappers = document.querySelectorAll('.lusion-card');
     const cards3D = document.querySelectorAll('.card-3d-wrapper');
-    const floatingWrappers = document.querySelectorAll('.floating-wrapper');
     
     gsap.set(cardsWrappers, { xPercent: 0, rotationZ: 0 });
     gsap.set(cards3D, { rotateY: 180 });
-    floatingWrappers.forEach(c => c.classList.add('floating-card'));
+
+    const floatAnim = gsap.to(".floating-wrapper", {
+        y: -15, duration: 1.5, yoyo: true, repeat: -1, ease: "sine.inOut"
+    });
 
     gsap.to(cardsWrappers[0], {
         x: -340, rotationZ: 0, ease: "none",
@@ -185,17 +166,36 @@ document.addEventListener('DOMContentLoaded', () => {
             trigger: "#cards-scroll-space",
             start: "top top", 
             end: "bottom bottom",
-            scrub: 1
+            scrub: 1,
+            onUpdate: (self) => {
+                if (self.progress > 0.6) {
+                    floatAnim.pause();
+                    gsap.to(".floating-wrapper", { y: 0, duration: 0.5 }); 
+                } else {
+                    floatAnim.play();
+                }
+            }
         }
     });
     tlCardsFlip.to(cards3D, { rotateY: 0, stagger: 0.2, duration: 1.5, ease: "back.out(1.2)" })
-               .add(() => { floatingWrappers.forEach(c => c.classList.remove('floating-card')); }) 
-               .to({}, { duration: 0.5 }); // Jeda kecil sebelum transisi ke Projects
+               .to({}, { duration: 0.5 }); 
 
-    // -- TIMELINE 4: PROJECTS HEADER --
+    // -- TIMELINE 4: PROJECTS TRANSITION (Curtain Reveal ke Contact) --
+    gsap.to("#dark-fade-overlay", {
+        opacity: 1, duration: 1,
+        scrollTrigger: { trigger: "#projects", start: "bottom 80%", end: "bottom 20%", scrub: 1 }
+    });
+
     gsap.to(".project-header", {
         y: 0, opacity: 1, duration: 1, ease: "power3.out",
-        scrollTrigger: { trigger: "#projects", start: "top 70%", scrub: false }
+        scrollTrigger: { trigger: "#projects", start: "top 75%", scrub: false }
+    });
+
+    gsap.utils.toArray('.project-item').forEach(item => {
+        gsap.to(item, {
+            y: 0, opacity: 1, duration: 1, ease: "power3.out",
+            scrollTrigger: { trigger: item, start: "top 85%" }
+        });
     });
 
     // -- TIMELINE 5: LET'S WORK TOGETHER --
@@ -240,7 +240,10 @@ document.addEventListener('DOMContentLoaded', () => {
     ScrollTrigger.create({
         trigger: "#work-together",
         start: "top 70%",
-        onEnter: runScramble,
+        onEnter: () => {
+            gsap.to('.work-anim', { y: 0, opacity: 1, stagger: 0.2, duration: 1, ease: "power3.out" });
+            runScramble();
+        },
         once: true
     });
 
@@ -259,7 +262,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const contactAnims = document.querySelectorAll(".contact-anim");
     ScrollTrigger.create({
         trigger: "#contact-page",
-        start: "top 60%",
+        start: "top 80%",
         onEnter: () => gsap.to(contactAnims, { y: 0, opacity: 1, stagger: 0.1, duration: 0.8, ease: "power3.out" }),
         onLeaveBack: () => gsap.to(contactAnims, { y: 30, opacity: 0, duration: 0.3 }) 
     });

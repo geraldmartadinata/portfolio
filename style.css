@@ -19,7 +19,7 @@ body {
 a { text-decoration: none; color: inherit; transition: var(--transition); }
 .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 section { padding: 120px 0; }
-#hero-hello-space, #expertise-wrapper, #projects, #work-together, #contact-page { padding: 0; }
+#hero-hello-space, #expertise-wrapper, #projects, #work-together, #contact-page { padding: 0; border: none; margin: 0; }
 .font-8bit { font-family: 'Press Start 2P', cursive; }
 
 /* Custom Scrollbar */
@@ -54,7 +54,6 @@ html { scrollbar-width: none; -ms-overflow-style: none; }
 /* =========================================
    NAVBAR THEMES
    ========================================= */
-/* 1. DARK THEME (DEFAULT) */
 .nav-btn-custom {
     background-color: transparent; border: 1px solid rgba(255,255,255,0.3); color: white;
 }
@@ -62,7 +61,7 @@ html { scrollbar-width: none; -ms-overflow-style: none; }
     background-color: #e5e7eb; color: black; border-color: #e5e7eb;
 }
 
-/* 2. LIGHT THEME (Dipicu via JS pada class .theme-light) */
+/* Light Theme Zone */
 .theme-light { color: black !important; }
 .theme-light .brand-text { color: black; }
 .theme-light .nav-btn-custom {
@@ -73,11 +72,9 @@ html { scrollbar-width: none; -ms-overflow-style: none; }
 }
 .theme-light .dot-indicator { background-color: black; }
 
-/* Light Scrollbar Theme */
 #custom-scrollbar.theme-light .scroll-track { background-color: rgba(0, 0, 0, 0.1); }
 #custom-scrollbar.theme-light .scroll-thumb { background-color: #4b5563; }
 
-/* Dropdown */
 #dropdown-menu.is-open .menu-text-anim { transform: translateY(0); opacity: 1; }
 .menu-text-anim { transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease; }
 .menu-link:nth-child(1) .menu-text-anim { transition-delay: 0.05s; }
@@ -93,7 +90,7 @@ html { scrollbar-width: none; -ms-overflow-style: none; }
     border-radius: 2px;
 }
 @keyframes wave-dance {
-    0%, 100% { transform: scaleY(0.3); }
+    0%, 100% { transform: scaleY(0.5); }
     50% { transform: scaleY(2.5); }
 }
 .music-waves-active .wave-bar {
@@ -122,9 +119,3 @@ html { scrollbar-width: none; -ms-overflow-style: none; }
     background-size: 100% 100%; background-repeat: no-repeat;
     background-position: center; transform: rotateY(180deg);
 }
-
-@keyframes floatCard {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-15px); }
-}
-.floating-card { animation: floatCard 4s ease-in-out infinite; }

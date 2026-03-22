@@ -31,9 +31,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 fadeAudio(bgMusic, 0, 800);
                 setTimeout(() => bgMusic.pause(), 800);
                 
-                // Menganimasikan hilangnya ombak dan munculnya garis lurus
-                musicWaves.classList.remove('opacity-100', 'scale-y-100');
-                musicWaves.classList.add('opacity-0', 'scale-y-0');
+                musicWaves.classList.remove('opacity-100', 'music-waves-active');
+                musicWaves.classList.add('opacity-0');
                 setTimeout(() => { 
                     musicLine.style.opacity = '1'; 
                     musicLine.style.width = '1.25rem'; 
@@ -42,16 +41,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 bgMusic.play().catch(e => console.log("Menunggu audio...", e));
                 fadeAudio(bgMusic, 0.3, 1200);
                 
-                // Menyembunyikan garis lurus dan memunculkan ombak
                 musicLine.style.opacity = '0';
                 musicLine.style.width = '0rem';
-                musicWaves.classList.remove('opacity-0', 'scale-y-0');
-                musicWaves.classList.add('opacity-100', 'scale-y-100');
+                musicWaves.classList.remove('opacity-0');
+                musicWaves.classList.add('opacity-100', 'music-waves-active');
             }
             isPlaying = !isPlaying;
         });
     }
 
+    // Menu Toggle Logic
     const menuBtn = document.getElementById('menu-btn');
     const dropdownMenu = document.getElementById('dropdown-menu');
     const menuIcon = document.getElementById('menu-icon');
@@ -100,48 +99,53 @@ document.addEventListener('DOMContentLoaded', () => {
         scrollTimeout = setTimeout(() => scrollbar.classList.remove('is-active'), 3000);
     });
 
-    // -- THEME SWITCHER (Light on Projects & Contact ONLY) --
-    ScrollTrigger.create({
-        trigger: "#projects",
-        start: "top 80px", 
-        endTrigger: "#work-together", 
-        end: "top 80px",
-        toggleClass: { targets: "#header, #custom-scrollbar", className: "theme-light" } 
-    });
-    ScrollTrigger.create({
-        trigger: "#contact-page",
-        start: "top 80px", 
-        end: "bottom top",
-        toggleClass: { targets: "#header, #custom-scrollbar", className: "theme-light" } 
+    // -- 2. DYNAMIC THEME SWITCHER --
+    // Mendeteksi area dengan class .light-theme-zone untuk mengubah warna navbar 1 kali saja tanpa glitch.
+    const lightZones = document.querySelectorAll('.light-theme-zone');
+    const header = document.getElementById('header');
+    
+    lightZones.forEach(zone => {
+        ScrollTrigger.create({
+            trigger: zone,
+            start: "top 5%", 
+            end: "bottom 5%",
+            onEnter: () => {
+                header.classList.add('theme-light');
+                scrollbar.classList.add('theme-light');
+            },
+            onLeave: () => {
+                header.classList.remove('theme-light');
+                scrollbar.classList.remove('theme-light');
+            },
+            onEnterBack: () => {
+                header.classList.add('theme-light');
+                scrollbar.classList.add('theme-light');
+            },
+            onLeaveBack: () => {
+                header.classList.remove('theme-light');
+                scrollbar.classList.remove('theme-light');
+            }
+        });
     });
 
-    // -- TIMELINE 1: INTRO (Zoom & BG Fade) --
-    gsap.to("#giant-text-container", { opacity: 1, duration: 1.5, ease: "power3.out", delay: 0.2 });
-
+    // -- TIMELINE 1: HERO KE HELLO (Native Smooth Reveal & Reversible) --
+    const outlineTexts = document.querySelectorAll('.outline-text');
+    
     const tlIntro = gsap.timeline({
         scrollTrigger: {
-            trigger: "#pinned-section",
+            trigger: "#hero-hello-space",
             start: "top top", 
-            end: "+=250%", 
-            scrub: 1,         
-            pin: true
+            end: "bottom bottom", 
+            scrub: 1
         }
     });
 
-    const outlineTexts = document.querySelectorAll('.outline-text');
-    tlIntro.to(outlineTexts, { color: "white", webkitTextStrokeWidth: "0px", duration: 1, ease: "none" })
-           .to({}, { duration: 0.5 }) 
-    
-    .addLabel("zoomIn")
-    .to("#scroll-prompt", { xPercent: -500, opacity: 0, duration: 1, ease: "power2.inOut" }, "zoomIn")
-    .to("#giant-text-container", { scale: 20, opacity: 0, duration: 2, ease: "power2.in" }, "zoomIn") 
-    .to("#hero-bg", { opacity: 0.4, scale: 1, duration: 2, ease: "power1.out" }, "zoomIn+=0.5")
-
-    .addLabel("facts", "-=0.5")
-    .to(".fact-reveal", { y: 0, opacity: 1, stagger: 0.1, duration: 1.2, ease: "power3.out" }, "facts")
-    .to({}, { duration: 1.5 }) 
-    
-    .to("#blackout-screen", { opacity: 1, duration: 1.5 });
+    tlIntro.to("#scroll-prompt", { opacity: 0, duration: 0.2 })
+           .to(outlineTexts, { color: "white", webkitTextStrokeWidth: "0px", duration: 1 })
+           // Transisi keluar Hero secara bersamaan dengan masuknya background & teks Hello
+           .to("#hero-text-wrapper", { y: -80, opacity: 0, duration: 1, ease: "power2.inOut" }, "transition")
+           .to("#hello-bg", { opacity: 0.5, scale: 1, duration: 1, ease: "power1.inOut" }, "transition")
+           .to(".fact-reveal", { y: 0, opacity: 1, stagger: 0.15, duration: 1, ease: "power3.out" }, "transition+=0.2");
 
     // -- TIMELINE 2: EXPERTISE TEXT --
     const tlExpertise = gsap.timeline({
@@ -153,13 +157,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    tlExpertise.to("#blackout-screen", { opacity: 0, duration: 0.5 })
-               .to("#text-area", { y: "0%", opacity: 1, duration: 1, ease: "power2.out" }, "enter")
+    tlExpertise.to("#text-area", { y: "0%", opacity: 1, duration: 1, ease: "power2.out" }, "enter")
                .to("#text-expertise", { y: "0%", opacity: 1, duration: 1, ease: "power2.out" }, "enter")
                .to("#text-expertise", { x: 100, duration: 1, ease: "power1.inOut" }, "shift") 
                .to("#text-desc", { opacity: 1, x: 0, duration: 1 }, "shift");
 
-    // -- TIMELINE 3: EXPERTISE CARDS --
+    // -- TIMELINE 3: EXPERTISE CARDS (Native Scroll Space) --
     const cardsWrappers = document.querySelectorAll('.lusion-card');
     const cards3D = document.querySelectorAll('.card-3d-wrapper');
     const floatingWrappers = document.querySelectorAll('.floating-wrapper');
@@ -168,58 +171,34 @@ document.addEventListener('DOMContentLoaded', () => {
     gsap.set(cards3D, { rotateY: 180 });
     floatingWrappers.forEach(c => c.classList.add('floating-card'));
 
-    // Spread
     gsap.to(cardsWrappers[0], {
         x: -340, rotationZ: 0, ease: "none",
-        scrollTrigger: { trigger: "#cards-sticky-container", start: "top bottom", end: "center center", scrub: 1 }
+        scrollTrigger: { trigger: "#cards-scroll-space", start: "top bottom", end: "center center", scrub: 1 }
     });
     gsap.to(cardsWrappers[2], {
         x: 340, rotationZ: 0, ease: "none",
-        scrollTrigger: { trigger: "#cards-sticky-container", start: "top bottom", end: "center center", scrub: 1 }
+        scrollTrigger: { trigger: "#cards-scroll-space", start: "top bottom", end: "center center", scrub: 1 }
     });
 
-    // Flip & Fade White
     const tlCardsFlip = gsap.timeline({
         scrollTrigger: {
-            trigger: "#cards-sticky-container",
-            start: "center center", 
-            end: "+=200%",
-            scrub: 1,
-            pin: true
+            trigger: "#cards-scroll-space",
+            start: "top top", 
+            end: "bottom bottom",
+            scrub: 1
         }
     });
-    tlCardsFlip.to(cards3D, { rotateY: 0, stagger: 0.3, duration: 1.5, ease: "back.out(1.2)" })
-               // Stop float saat kartu sudah terbuka
+    tlCardsFlip.to(cards3D, { rotateY: 0, stagger: 0.2, duration: 1.5, ease: "back.out(1.2)" })
                .add(() => { floatingWrappers.forEach(c => c.classList.remove('floating-card')); }) 
-               .to({}, { duration: 0.5 }) 
-               // Fade overlay putih untuk transisi ke page Projects
-               .to("#white-fade-overlay", { opacity: 1, duration: 1.5 });
+               .to({}, { duration: 0.5 }); // Jeda kecil sebelum transisi ke Projects
 
-    // -- TIMELINE 4: PROJECTS TRANSITION --
-    gsap.to("#white-fade-overlay", {
-        opacity: 0, duration: 1.5,
-        scrollTrigger: { trigger: "#projects", start: "top 90%", end: "top 40%", scrub: 1 }
-    });
+    // -- TIMELINE 4: PROJECTS HEADER --
     gsap.to(".project-header", {
         y: 0, opacity: 1, duration: 1, ease: "power3.out",
-        scrollTrigger: { trigger: "#projects", start: "top 60%", scrub: false }
-    });
-
-    // Transisi Keluar dari Projects ke Let's Work (Tirai Gelap)
-    gsap.to("#dark-fade-overlay", {
-        opacity: 1, duration: 1,
-        scrollTrigger: { trigger: "#work-together", start: "top bottom", end: "top center", scrub: 1 }
+        scrollTrigger: { trigger: "#projects", start: "top 70%", scrub: false }
     });
 
     // -- TIMELINE 5: LET'S WORK TOGETHER --
-    const slotTrack = document.getElementById('slot-machine-track');
-    setInterval(() => {
-        gsap.to(slotTrack, {
-            y: -20, duration: 0.5, ease: "back.inOut(1.5)",
-            onComplete: () => { gsap.set(slotTrack, { y: 0 }); }
-        });
-    }, 2000);
-
     const scrambleTexts = document.querySelectorAll('.scramble-text');
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*";
     
@@ -260,23 +239,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     ScrollTrigger.create({
         trigger: "#work-together",
-        start: "top 60%",
+        start: "top 70%",
         onEnter: runScramble,
         once: true
     });
 
-    // Hover Skip-Ink Sequential Timeline
     const workTrigger = document.getElementById('work-trigger');
     const lineTop = document.querySelector('.custom-underline-top');
     const lineBottom = document.querySelector('.custom-underline-bottom');
     let hoverTl = gsap.timeline({ paused: true });
 
-    // Timeline di set untuk Top maju, lalu Bottom maju
     hoverTl.to(lineTop, { scaleX: 1, duration: 0.4, ease: "power2.out" })
            .to(lineBottom, { scaleX: 1, duration: 0.4, ease: "power2.out" }, "-=0.1");
 
     workTrigger.addEventListener('mouseenter', () => hoverTl.play());
-    // Berkat .reverse(), Bottom akan mundur duluan, lalu Top mundur
     workTrigger.addEventListener('mouseleave', () => hoverTl.reverse());
 
     // -- TIMELINE 6: CONTACT PAGE --

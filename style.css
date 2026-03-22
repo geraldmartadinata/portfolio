@@ -1,11 +1,6 @@
-/* =========================================
-   GLOBAL VARIABLES & RESET
-   ========================================= */
 :root {
     --bg-main: #0a0a0a;
     --text-main: #f3f4f6;
-    --text-muted: #9ca3af;
-    --accent-color: #d4af37;
     --font-family: 'Poppins', sans-serif;
     --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -24,13 +19,10 @@ body {
 a { text-decoration: none; color: inherit; transition: var(--transition); }
 .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 section { padding: 120px 0; }
-#pinned-section, #expertise-wrapper, #projects, #work-together, #contact-page { padding: 0; }
-
+#hero-hello-space, #expertise-wrapper, #projects, #work-together, #contact-page { padding: 0; }
 .font-8bit { font-family: 'Press Start 2P', cursive; }
 
-/* =========================================
-   CUSTOM SCROLLBAR
-   ========================================= */
+/* Custom Scrollbar */
 ::-webkit-scrollbar { display: none; }
 html { scrollbar-width: none; -ms-overflow-style: none; }
 
@@ -50,80 +42,40 @@ html { scrollbar-width: none; -ms-overflow-style: none; }
     width: 4px; height: 40px; background-color: white; border-radius: 4px; will-change: transform; transition: background-color 0.3s ease;
 }
 
-/* Light Theme Scrollbar (Projects & Contact) */
-.theme-light #custom-scrollbar .scroll-track { background-color: rgba(0, 0, 0, 0.1); }
-.theme-light #custom-scrollbar .scroll-thumb { background-color: #4b5563; /* Abu abu gelap */ }
+/* Typography */
+.outline-text { color: transparent; -webkit-text-stroke: 1px white; text-stroke: 1px white; }
 
-/* =========================================
-   TYPOGRAPHY & EFFECTS
-   ========================================= */
-.outline-text {
-    color: transparent; -webkit-text-stroke: 1px white; text-stroke: 1px white; 
-}
-
-/* Skip-Ink Effect (Let's Work Together) - #060d23 matches bg */
 .hover-underline-trigger {
     text-shadow: 4px 0 #060d23, -4px 0 #060d23, 0 4px #060d23, 0 -4px #060d23;
     z-index: 10; position: relative; display: inline-block;
 }
-.custom-underline-top, .custom-underline-bottom { z-index: -1; } /* Mundur ke balik text shadow */
+.custom-underline-top, .custom-underline-bottom { z-index: -1; }
 
 /* =========================================
-   NAVBAR BUTTONS (DARK & LIGHT THEMES)
+   NAVBAR THEMES
    ========================================= */
-header { transition: var(--transition); background: transparent !important; }
-
-/* 1. DARK THEME DEFAULT */
-.nav-btn-custom.music-btn, .nav-btn-custom.menu-btn {
+/* 1. DARK THEME (DEFAULT) */
+.nav-btn-custom {
     background-color: transparent; border: 1px solid rgba(255,255,255,0.3); color: white;
 }
-.nav-btn-custom.talk-btn {
-    background-color: #1c1c1c; border: 1px solid #1c1c1c; color: white;
-}
-#music-line, .wave-bar, #menu-icon span, .dot-indicator { background-color: white; }
-
-/* Dark Theme HOVER */
-.nav-btn-custom.music-btn:hover, .nav-btn-custom.menu-btn:hover {
+.nav-btn-custom:hover {
     background-color: #e5e7eb; color: black; border-color: #e5e7eb;
 }
-.nav-btn-custom.music-btn:hover #music-line,
-.nav-btn-custom.music-btn:hover .wave-bar,
-.nav-btn-custom.menu-btn:hover #menu-icon span { background-color: black; }
 
-.nav-btn-custom.talk-btn:hover {
-    background-color: white; color: black; border-color: white;
+/* 2. LIGHT THEME (Dipicu via JS pada class .theme-light) */
+.theme-light { color: black !important; }
+.theme-light .brand-text { color: black; }
+.theme-light .nav-btn-custom {
+    background-color: white; border: 1px solid rgba(0,0,0,0.8); color: black;
 }
-.nav-btn-custom.talk-btn:hover .dot-indicator { background-color: black; }
+.theme-light .nav-btn-custom:hover {
+    background-color: #e5e7eb; border-color: #e5e7eb; color: black;
+}
+.theme-light .dot-indicator { background-color: black; }
 
-/* 2. LIGHT THEME */
-.header-theme.theme-light { color: black !important; }
-.header-theme.theme-light .brand-text { color: black; }
-
-.header-theme.theme-light .nav-btn-custom.music-btn,
-.header-theme.theme-light .nav-btn-custom.menu-btn { 
-    background-color: transparent; border-color: rgba(0,0,0,0.3); color: black;
-}
-.header-theme.theme-light .nav-btn-custom.talk-btn { 
-    background-color: black; color: white; border-color: black;
-}
-.header-theme.theme-light #music-line, 
-.header-theme.theme-light .wave-bar, 
-.header-theme.theme-light #menu-icon span { background-color: black; }
-.header-theme.theme-light .dot-indicator { background-color: white; }
-
-/* Light Theme HOVER */
-.header-theme.theme-light .nav-btn-custom.music-btn:hover,
-.header-theme.theme-light .nav-btn-custom.menu-btn:hover {
-    background-color: #1c1c1c; color: white; border-color: #1c1c1c;
-}
-.header-theme.theme-light .nav-btn-custom.music-btn:hover #music-line,
-.header-theme.theme-light .nav-btn-custom.music-btn:hover .wave-bar,
-.header-theme.theme-light .nav-btn-custom.menu-btn:hover #menu-icon span { background-color: white; }
-
-.header-theme.theme-light .nav-btn-custom.talk-btn:hover {
-    background-color: #e5e7eb; color: black; border-color: #e5e7eb;
-}
-.header-theme.theme-light .nav-btn-custom.talk-btn:hover .dot-indicator { background-color: black; }
+/* Light Scrollbar Theme */
+#custom-scrollbar.theme-light .scroll-track { background-color: rgba(0, 0, 0, 0.1); }
+#custom-scrollbar.theme-light .scroll-thumb { background-color: #4b5563; }
 
 /* Dropdown */
 #dropdown-menu.is-open .menu-text-anim { transform: translateY(0); opacity: 1; }
@@ -132,11 +84,28 @@ header { transition: var(--transition); background: transparent !important; }
 .menu-link:nth-child(2) .menu-text-anim { transition-delay: 0.10s; }
 .menu-link:nth-child(3) .menu-text-anim { transition-delay: 0.15s; }
 .menu-link:nth-child(4) .menu-text-anim { transition-delay: 0.20s; }
-.active-dot { top: 50%; transform: translateY(-50%) scale(0); }
 
 /* =========================================
-   3D CARDS 
+   MUSIC WAVE ANIMATIONS
    ========================================= */
+.wave-bar {
+    transform-origin: bottom;
+    border-radius: 2px;
+}
+@keyframes wave-dance {
+    0%, 100% { transform: scaleY(0.3); }
+    50% { transform: scaleY(2.5); }
+}
+.music-waves-active .wave-bar {
+    animation: wave-dance 1s ease-in-out infinite;
+}
+.wave-bar:nth-child(1) { animation-delay: 0s; }
+.wave-bar:nth-child(2) { animation-delay: -0.2s; }
+.wave-bar:nth-child(3) { animation-delay: -0.4s; }
+.wave-bar:nth-child(4) { animation-delay: -0.6s; }
+.wave-bar:nth-child(5) { animation-delay: -0.8s; }
+
+/* 3D CARDS */
 .card-scene { perspective: 1500px; }
 .card-3d-wrapper {
     position: relative; width: 100%; height: 100%;
@@ -159,9 +128,3 @@ header { transition: var(--transition); background: transparent !important; }
     50% { transform: translateY(-15px); }
 }
 .floating-card { animation: floatCard 4s ease-in-out infinite; }
-
-/* Animasi Ombak Musik */
-@keyframes eq {
-    0%, 100% { height: 4px; }
-    50% { height: 14px; }
-}

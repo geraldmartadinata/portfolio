@@ -1,3 +1,5 @@
+<img src="./images/readme-img1.png" alt="Portfolio Hero Section" width="800">
+
 # Gerald Martadinata
 
 Hello, I'm Gerald, an undergraduate Computer Science student at BINUS University. I am passionate about software engineering, back-end development, and artificial intelligence. 

@@ -43,3 +43,4 @@ I am always open to discussing web development, AI, or potential collaborations.
 - **Location:** South Tangerang, Banten, Indonesia
 - **LinkedIn:** https://www.linkedin.com/in/geraldmartadinata/
 - **GitHub:** https://github.com/geraldmartadinata
+- **Website:** https://martadinata.vercel.app/

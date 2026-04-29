@@ -42,7 +42,7 @@ A back-end inventory management service built to handle real-time stock updates 
 I am always open to discussing web development, AI, or potential collaborations. 
 
 - **Email:** geraldbinus@gmail.com
-- **Location:** South Tangerang, Banten, Indonesia
+- **Location:** Tangerang Regency, Banten, Indonesia
 - **LinkedIn:** https://www.linkedin.com/in/geraldmartadinata/
 - **GitHub:** https://github.com/geraldmartadinata
 - **Website:** https://martadinata.vercel.app/
